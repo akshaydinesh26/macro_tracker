@@ -1,6 +1,8 @@
+
 from functools import lru_cache
 from pathlib import Path
 
+import yaml
 from pydantic import ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -52,7 +54,6 @@ def load_indicator_list(Path_to_indicator_list: Path) -> dict:
             ]
         }
     """
-    import yaml
 
     with open(Path_to_indicator_list, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)

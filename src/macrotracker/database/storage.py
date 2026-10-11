@@ -1,0 +1,4 @@
+
+
+class SeriesNotFound(Exception):
+    pass
