@@ -1,0 +1,3 @@
+indicator:
+  - name: Unemployment Rate
+    fred_code: UNRATE

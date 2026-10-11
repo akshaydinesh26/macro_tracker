@@ -1,0 +1,26 @@
+[project]
+name = "macrotracker"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "akshaydinesh26", email = "akshaydinesh26@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "dotenv>=0.9.9",
+    "requests>=2.34.2",
+    "fastapi>=0.111.0",
+    "pydantic>=2.12.2",
+    "pydantic-settings>=2.12.2",
+]
+
+[project.scripts]
+macrotracker = "macrotracker.__api__:main"
+
+[dependency-groups]
+test = ["pytest>=7.0.0"]
+
+[build-system]
+requires = ["uv_build>=0.12.20,<0.13.0"]
+build-backend = "uv_build"
