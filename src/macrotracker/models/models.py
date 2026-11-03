@@ -4,12 +4,12 @@ from typing import Self
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 
-class HealthResponse:
+class HealthResponse(BaseModel):
     status: str = "Healthy"
 
 class AvailableResponse(BaseModel):
     status: str
-    sync_status: str
+    sync_status: bool
     sync_error: str | None = None
 
 class DataPoint(BaseModel):
@@ -26,8 +26,8 @@ class DataResponse(BaseModel):
                     "end_date": "2020-02-01",
                     "count": 2,
                     "data": [
-                        {"date": "2020-01-01", "value": 3.5},
-                        {"date": "2020-02-01", "value": 3.5},
+                        {"datepoint": "2020-01-01", "value": 3.5},
+                        {"datepoint": "2020-02-01", "value": 3.5},
                     ],
                 }
             ]

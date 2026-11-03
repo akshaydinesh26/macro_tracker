@@ -13,6 +13,7 @@ dependencies = [
     "fastapi>=0.111.0",
     "pydantic>=2.12.2",
     "pydantic-settings>=2.12.2",
+    "uvicorn>=0.22.0",
 ]
 
 [project.scripts]

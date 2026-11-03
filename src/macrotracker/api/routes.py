@@ -1,16 +1,17 @@
 import asyncio
-from fastapi import APIRouter, status, Request, Response
-from fastapi.responses import HTTPException
 
-from macrotracker.models.models import (
-    AvailableResponse, 
-    DataResponse, 
-    HealthResponse, 
-    IndicatorsResponse,
-    DataRequest,
-     DataPoint )
+from fastapi import APIRouter, HTTPException, Request, Response, status
+
 from macrotracker.database.storage import SeriesNotFound
+from macrotracker.models.models import (
+    AvailableResponse,
+    DataRequest,
+    DataResponse,
+    HealthResponse,
+    IndicatorsResponse,
+)
 from macrotracker.services.process_request import retrive_data
+
 router = APIRouter()
 
 @router.get("/health", response_model=HealthResponse, status_code=status.HTTP_200_OK)
@@ -47,19 +48,19 @@ async def run_macrotracker(body:DataRequest, request: Request):
         raise HTTPException(404, f"Unknown indicator: {body.indicator}")
     # retrive data from the database
     try:
-        rows = await asyncio.to_thread(
-            retrive_data, body.indicator, body.start_date, body.end_date
+        response_data, data_point_count = await asyncio.to_thread(
+            retrive_data, body, state.base_cfg.database
         )
     except SeriesNotFound:
         raise HTTPException(
             503, f'No data found for indicator {body.indicator} in {body.start_date}–{body.end_date}'
         )
-    return DataRequest(
-        indicators=body.indicator,
+    return DataResponse(
+        indicator=body.indicator,
         start_date=body.start_date,
         end_date=body.end_date,
-        count=len(rows),
-        data=[DataPoint(date=d,value=v) for d,v in rows]
+        count=data_point_count,
+        data=response_data
     )
 
 

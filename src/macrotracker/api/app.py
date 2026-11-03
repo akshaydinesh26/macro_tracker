@@ -18,7 +18,7 @@ def create_app() -> FastAPI:
         # load all settings and indicator list to app state
         base_cfg = get_settings()
         indicators = load_indicator_list(base_cfg.indicator_list)
-        storage = Database(base_cfg.database_path)
+        storage = Database(base_cfg.database, indicators)
         app.state.base_cfg = base_cfg # Store the base configuration in the app state
         app.state.storage = storage # path database
         app.state.indicators = indicators # list of indicators
@@ -26,7 +26,7 @@ def create_app() -> FastAPI:
         app.state.sync_error = None 
         # peform sync of database
         try:
-            await asyncio.to_thread(sync, storage, indicators)
+            await asyncio.to_thread(sync, storage, indicators, base_cfg)
             app.state.sync_done = True
         except Exception as e:
             logger.exception('Database Sync Failed')
